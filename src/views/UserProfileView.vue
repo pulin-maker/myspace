@@ -32,6 +32,8 @@ export default {
     const route = useRoute();
     const userId = route.params.userId;
     
+    console.log(userId);
+    
     const user = reactive({
       id: 1,
       userName: 'Chubao',

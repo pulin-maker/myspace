@@ -17,7 +17,8 @@ import { reactive } from 'vue';
 import ContentBase from "../components/ContentBase.vue";
 import UserProfileInfoView from '../components/UserProfileInfoView.vue'
 import UserProfileWriteView from '../components/UserProfileWriteView.vue';
-import UserProfilePostView from '../components/UserProfilePostView.vue'
+import UserProfilePostView from '../components/UserProfilePostView.vue';
+import { useRoute } from 'vue-router'
 
 export default {
   name: "UserProfileView",
@@ -28,6 +29,9 @@ export default {
     UserProfilePostView,
   },
   setup() {
+    const route = useRoute();
+    const userId = route.params.userId;
+    
     const user = reactive({
       id: 1,
       userName: 'Chubao',
@@ -71,12 +75,13 @@ export default {
     }
 
     const post_a_post = (content) => {
-      if (content == null) return ;
+      if (content == "") return ;
       posts.post.unshift({
         id: posts.count,
         userId: 1,
         content: content
-      })
+      });
+      content = '';
     }
 
     return {
@@ -84,7 +89,8 @@ export default {
       follow,
       unfollow,
       posts,
-      post_a_post
+      post_a_post,
+      userId
     }
   }
 };

@@ -18,6 +18,8 @@
 
 <script>
 import { ref } from "vue";
+import $ from 'jquery'
+import { useStore } from 'vuex'
 import ContentBase from "./ContentBase.vue";
 
 export default {
@@ -27,11 +29,33 @@ export default {
   },
 
   setup(props, context) {
-    const content = ref('');
-
+    let content = ref('');
+    const store = useStore();
+    
     const post_a_post = () => {
-        context.emit('post_a_post', content.value);
+      $.ajax({
+        url: "https://app165.acapp.acwing.com.cn/myspace/post/",
+        type: 'post',
+        data: {
+          content: content.value
+        },
+        headers: {
+          'Authorization': 'Bearer ' + store.state.user.access
+        },
+        success(resp) {
+          if (resp.result === "success") {
+            context.emit('post_a_post', content.value);
+            content.value = '';
+          }
+          
+        }
+      })
+
+
+      
     }
+
+
 
     return {
       content,
